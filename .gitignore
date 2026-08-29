@@ -1,0 +1,79 @@
+# ==============================
+# Java / Maven
+# ==============================
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Maven wrapper (keep wrapper jar, ignore downloaded distribution)
+.mvn/wrapper/maven-wrapper.jar
+
+# Compiled class files
+*.class
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# ==============================
+# IDE
+# ==============================
+# VS Code
+.vscode/
+*.code-workspace
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+# NetBeans
+nbproject/
+nb-configuration.xml
+
+# ==============================
+# OS
+# ==============================
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Linux
+*~
+
+# ==============================
+# Logs
+# ==============================
+*.log
+logs/
+spring-boot-logger.log
+
+# ==============================
+# Environment / Sensitive Config
+# ==============================
+.env
+.env.*
+application-local.properties
+application-dev.properties
+application-prod.properties
+
+# If you use a properties file with real passwords, uncomment:
+# application.properties
+
+# ==============================
+# Docker (optional: ignore build context files)
+# ==============================
+# Docker build can use .dockerignore separately
+# Usually Dockerfile and docker-compose.yml are tracked
