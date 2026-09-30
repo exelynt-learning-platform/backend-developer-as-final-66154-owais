@@ -5,11 +5,11 @@ import com.example.bookingsystem.dto.ReservationResponse;
 import com.example.bookingsystem.dto.ReservationUpdateRequest;
 import com.example.bookingsystem.entity.ReservationStatus;
 import com.example.bookingsystem.service.ReservationService;
+import com.example.bookingsystem.util.SortUtil;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,7 +38,7 @@ public class ReservationController {
             @RequestParam(defaultValue = "id,asc") String[] sort,
             Authentication authentication) {
 
-        Pageable pageable = PageRequest.of(page, size, parseSort(sort));
+        Pageable pageable = PageRequest.of(page, size, SortUtil.parseSort(sort));
         Page<ReservationResponse> reservations = reservationService.getReservations(status, minPrice, maxPrice, pageable, authentication);
         return ResponseEntity.ok(reservations);
     }
@@ -62,18 +62,17 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.updateReservation(id, request));
     }
 
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> cancelReservation(@PathVariable Long id) {
-        reservationService.deleteReservation(id);
-        return ResponseEntity.noContent().build();
+    @PatchMapping("/{id}/cancel")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<ReservationResponse> cancelReservation(@PathVariable Long id,
+                                                                 Authentication authentication) {
+        return ResponseEntity.ok(reservationService.cancelReservation(id, authentication));
     }
 
-    private Sort parseSort(String[] sort) {
-        if (sort.length == 0) return Sort.unsorted();
-        String property = sort[0];
-        Sort.Direction direction = sort.length > 1 && sort[1].equalsIgnoreCase("desc") ?
-                Sort.Direction.DESC : Sort.Direction.ASC;
-        return Sort.by(direction, property);
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteReservation(@PathVariable Long id) {
+        reservationService.deleteReservation(id);
+        return ResponseEntity.noContent().build();
     }
 }

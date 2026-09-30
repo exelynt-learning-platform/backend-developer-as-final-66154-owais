@@ -11,7 +11,8 @@ public class DtoMapper {
                 resource.getId(),
                 resource.getName(),
                 resource.getDescription(),
-                resource.isAvailable()
+                resource.isAvailable(),
+                resource.getPricePerHour()
         );
     }
 

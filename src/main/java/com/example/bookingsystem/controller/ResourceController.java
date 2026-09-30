@@ -4,13 +4,15 @@ package com.example.bookingsystem.controller;
 import com.example.bookingsystem.dto.ResourceRequest;
 import com.example.bookingsystem.dto.ResourceResponse;
 import com.example.bookingsystem.service.ResourceService;
+import com.example.bookingsystem.util.SortUtil;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/resources")
@@ -23,8 +25,12 @@ public class ResourceController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ResourceResponse>> getAllResources() {
-        return ResponseEntity.ok(resourceService.getAllResources());
+    public ResponseEntity<Page<ResourceResponse>> getAllResources(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id,asc") String[] sort) {
+        Pageable pageable = PageRequest.of(page, size, SortUtil.parseSort(sort));
+        return ResponseEntity.ok(resourceService.getAllResources(pageable));
     }
 
     @GetMapping("/{id}")

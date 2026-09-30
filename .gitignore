@@ -65,9 +65,10 @@ spring-boot-logger.log
 # ==============================
 .env
 .env.*
+!.env.example
 application-local.properties
 application-dev.properties
-application-prod.properties
+# application-prod.properties is tracked (contains no secrets)
 
 # If you use a properties file with real passwords, uncomment:
 # application.properties
@@ -76,4 +77,5 @@ application-prod.properties
 # Docker (optional: ignore build context files)
 # ==============================
 # Docker build can use .dockerignore separately
-# Usually Dockerfile and docker-compose.yml are tracked
+# Usually Dockerfile and docker-compose.yml are tracked.env
+target/
